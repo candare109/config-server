@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:logisticsdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true                         # access H2 UI at /h2-console
+      path: /h2-console
+      settings:
+        web-allow-others: true
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop                 # creates tables on start, drops on stop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
