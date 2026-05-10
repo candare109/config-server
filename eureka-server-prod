@@ -1,0 +1,66 @@
+spring:
+  profiles:
+    active: prod
+
+server:
+  port: 8761
+  compression:
+    enabled: true
+    min-response-size: 1024
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 10
+    accept-count: 100
+    max-connections: 10000
+
+eureka:
+  instance:
+    hostname: eureka-server
+    preferIpAddress: false
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+    statusPageUrl: http://eureka-server:8761/actuator/health
+    healthCheckUrl: http://eureka-server:8761/actuator/health
+  
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    healthcheck:
+      enabled: true
+  
+  server:
+    enableSelfPreservation: true           # CRITICAL for production
+    evictionIntervalTimerInMs: 60000       # 60 seconds
+    shouldUseReadOnlyResponseCache: true   # Cache enabled
+    responseCacheUpdateIntervalMs: 30000   # Update cache every 30s
+    peer-node-read-timeout-ms: 500
+    retention-time-in-ms-for-last-renewal: 60000
+    max-threads-for-status-replication: 1
+    number-of-replication-threads: 20
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+logging:
+  level:
+    root: WARN
+    com.netflix.eureka: INFO
+    com.netflix.discovery: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/eureka-server.log
+    max-size: 10MB
+    max-history: 30
