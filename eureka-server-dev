@@ -1,0 +1,32 @@
+spring:
+  profiles:
+    active: dev
+
+server:
+  port: 8761
+
+eureka:
+  instance:
+    hostname: localhost
+    preferIpAddress: false
+  
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+  
+  server:
+    enableSelfPreservation: false        # Disable for faster testing
+    evictionIntervalTimerInMs: 10000     # Check every 10s
+    shouldUseReadOnlyResponseCache: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
+logging:
+  level:
+    root: DEBUG
+    com.netflix.eureka: DEBUG
+    com.netflix.discovery: DEBUG
