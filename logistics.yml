@@ -2,7 +2,7 @@ spring:
   application:
     name: logistics
   profiles:
-    active: prod
+    active: dev
   devtools:
     add-properties: false
   jackson:
@@ -11,8 +11,26 @@ spring:
   jpa:
     properties:
       hibernate:
-       jdbc:
-         time_zone: UTC
+        jdbc:
+          time_zone: UTC
+
+# ADD EUREKA CONFIGURATION
+eureka:
+  client:
+    enabled: true
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+    registry-fetch-interval-seconds: 30
+  
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    prefer-ip-address: false
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+    health-check-url: http://localhost:7000/actuator/health
+    status-page-url: http://localhost:7000/actuator/health
 
 server:
   port: 7000
