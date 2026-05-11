@@ -1,3 +1,6 @@
+# logistics.yml  — base config served by Config Server to the logistics microservice.
+# Loaded for ALL profiles. Profile-specific files (logistics-dev.yml, etc.) override values here.
+
 spring:
   application:
     name: logistics
@@ -14,7 +17,12 @@ spring:
         jdbc:
           time_zone: UTC
 
-# ADD EUREKA CONFIGURATION
+server:
+  port: 7000
+
+# --- Eureka client configuration ---
+# defaultZone uses the Docker service name so it works inside docker-compose.
+# The dev profile (logistics-dev.yml) overrides defaultZone to localhost for local runs.
 eureka:
   client:
     enabled: true
@@ -23,14 +31,16 @@ eureka:
     service-url:
       defaultZone: http://eureka-server:8761/eureka/
     registry-fetch-interval-seconds: 30
-  
+
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-    prefer-ip-address: false
+    prefer-ip-address: true                          # use IP inside Docker so Eureka can route back correctly
+
     lease-renewal-interval-in-seconds: 30
     lease-expiration-duration-in-seconds: 90
-    health-check-url: http://logistics-app:7000/actuator/health
-    status-page-url: http://logistics-app:7000/actuator/health
 
-server:
-  port: 7000
+    # FIXED: was http://localhost:7000 — Eureka polls these URLs from its OWN container,
+    # so "localhost" resolves to the Eureka container, not the logistics container.
+    # Use the Docker service name (must match container_name in docker-compose.yml).
+    health-check-url: http://logistics-app:7000/actuator/health
+    status-page-url:  http://logistics-app:7000/actuator/info
