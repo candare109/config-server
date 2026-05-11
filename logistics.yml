@@ -29,8 +29,8 @@ eureka:
     prefer-ip-address: false
     lease-renewal-interval-in-seconds: 30
     lease-expiration-duration-in-seconds: 90
-    health-check-url: http://localhost:7000/actuator/health
-    status-page-url: http://localhost:7000/actuator/health
+    health-check-url: http://logistics-app:7000/actuator/health
+    status-page-url: http://logistics-app:7000/actuator/health
 
 server:
   port: 7000
