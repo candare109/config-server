@@ -8,13 +8,12 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
 
 jwt:
   secret: ${JWT_SECRET_KEY}
   expiration: 86400000
 
-server:
-  port: 7000
+# Eureka settings for dev (inherits from logistics.yml)
+eureka:
+  server:
+    # Can override here if needed
